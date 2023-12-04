@@ -13,6 +13,6 @@ jobs:
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: php
+          release-type: node
           package-name: test-release-sync-actions
           pull-request-title-pattern: "chore(release): release ${version}"
