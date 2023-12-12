@@ -1,4 +1,7 @@
-name: Sync release to staging
+env:
+  branch: staging
+
+name: Sync release to ${{ env.branch }}
 
 on:
   workflow_dispatch:
@@ -10,15 +13,17 @@ on:
   release:
     types: [published]
 
+
+
 jobs:
   sync-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Open pull request to staging
-        uses: tretuna/sync-branches@1.4.0
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FROM_BRANCH: ${{ inputs.version || github.event.release.tag_name }}
-          TO_BRANCH: "staging"
-          PULL_REQUEST_TITLE: "chore(release): sync ${{ inputs.version || github.event.release.tag_name }} to staging"
+      - name: create pull request to ${{ env.branch }}
+        run: gh pr create -B $TO_BRANCH -H $FROM_BRANCH --title $PULL_REQUEST_TITLE
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            FROM_BRANCH: ${{ inputs.version || github.event.release.tag_name }}
+            TO_BRANCH: ${{ env.branch }}
+            PULL_REQUEST_TITLE: "chore(release): sync ${{ inputs.version || github.event.release.tag_name }} to ${{ env.branch }}"
+
