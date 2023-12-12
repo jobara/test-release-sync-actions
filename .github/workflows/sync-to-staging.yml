@@ -14,22 +14,33 @@ env:
   branch: staging
 
 jobs:
-  sync-release:
+  create-sync-branch:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
+        if: ${{ inputs.version }}
         uses: actions/checkout@v4
       - name: Get Input Hash
         if: ${{ inputs.version }}
         run: echo "COMMIT_SHA=$(git show-ref ${{ inputs.version || github.event.release.tag_name }} --hash)" >> $GITHUB_ENV
-      - name: Create release branch
-        run: |
-          git branch sync-${{ inputs.version || github.event.release.tag_name }} ${{ env.COMMIT_SHA || github.event.release.target_commitish }}
+      - name: Create staging sync branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'sync-staging-${{ inputs.version || github.event.release.tag_name }}'
+          sha: '${{ inputs.version || github.event.release.target_commitish }}'
+  sync-release:
+    needs: create-sync-branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: create pull request to ${{ env.branch }}
         run: gh pr create -B $TO_BRANCH -H $FROM_BRANCH --title "$PULL_REQUEST_TITLE" --body "$PULL_REQUEST_BODY"
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            FROM_BRANCH: sync-${{ inputs.version || github.event.release.tag_name }}
+            FROM_BRANCH: sync-staging-${{ inputs.version || github.event.release.tag_name }}
             TO_BRANCH: ${{ env.branch }}
             PULL_REQUEST_TITLE: "chore(release): sync ${{ inputs.version || github.event.release.tag_name }} to ${{ env.branch }}"
             PULL_REQUEST_BODY: |
