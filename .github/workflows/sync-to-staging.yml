@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: create pull request to ${{ env.branch }}
-        run: gh pr create -B $TO_BRANCH -H $FROM_BRANCH --title $PULL_REQUEST_TITLE
+        run: gh pr create -B $TO_BRANCH -H $FROM_BRANCH --title "$PULL_REQUEST_TITLE"
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             FROM_BRANCH: ${{ inputs.version || github.event.release.tag_name }}
