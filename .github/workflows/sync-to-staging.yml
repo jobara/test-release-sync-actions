@@ -20,6 +20,8 @@ jobs:
       - name: Checkout code
         if: ${{ inputs.version }}
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
       - name: Get Input Hash
         if: ${{ inputs.version }}
         run: echo "COMMIT_SHA=$(git show-ref ${{ inputs.version || github.event.release.tag_name }} --hash)" >> $GITHUB_ENV
@@ -29,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: 'sync-staging-${{ inputs.version || github.event.release.tag_name }}'
-          sha: '${{ inputs.version || github.event.release.target_commitish }}'
+          sha: '${{ env.COMMIT_SHA || github.event.release.target_commitish }}'
   sync-release:
     needs: create-sync-branch
     runs-on: ubuntu-latest
