@@ -19,10 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: create pull request to ${{ env.branch }}
-        run: gh pr create -B $TO_BRANCH -H $FROM_BRANCH --title "$PULL_REQUEST_TITLE"
+        run: gh pr create -B $TO_BRANCH -H $FROM_BRANCH --title "$PULL_REQUEST_TITLE" --body "$PULL_REQUEST_BODY"
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             FROM_BRANCH: ${{ inputs.version || github.event.release.tag_name }}
             TO_BRANCH: ${{ env.branch }}
             PULL_REQUEST_TITLE: "chore(release): sync ${{ inputs.version || github.event.release.tag_name }} to ${{ env.branch }}"
+            PULL_REQUEST_BODY: |
+              Merge ${{ env.FROM_BRANCH }} into ${{ env.TO_BRANCH }}
+              Generated via the "${ name }" GitHub Action
 
