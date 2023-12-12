@@ -1,7 +1,4 @@
-env:
-  branch: staging
-
-name: Sync release to ${{ env.branch }}
+name: Sync release to staging
 
 on:
   workflow_dispatch:
@@ -13,7 +10,8 @@ on:
   release:
     types: [published]
 
-
+env:
+  branch: staging
 
 jobs:
   sync-release:

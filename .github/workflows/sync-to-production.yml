@@ -1,7 +1,4 @@
-env:
-  branch: production
-
-name: Sync release to ${{ env.branch }}
+name: Sync release to production
 
 on:
   workflow_dispatch:
@@ -13,6 +10,8 @@ on:
   release:
     types: [released]
 
+env:
+  branch: production
 
 
 jobs:
