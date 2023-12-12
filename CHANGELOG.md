@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.2](https://github.com/jobara/test-release-sync-actions/compare/v1.0.1...v1.0.2) (2023-12-12)
+
+
+### Bug Fixes
+
+* create branch without switching ([7f9c035](https://github.com/jobara/test-release-sync-actions/commit/7f9c035c629e7ae26bcd1c5dcb1e00a0ec7cb2c1))
+* create sync branch ([d3ef598](https://github.com/jobara/test-release-sync-actions/commit/d3ef5986efc041d75c641ac629f42ff088487f80))
+* create temp branch ([9add48d](https://github.com/jobara/test-release-sync-actions/commit/9add48d95ce8e0b3ec81487b5f4fbe0b6c440030))
+* getting tag sha ([831230f](https://github.com/jobara/test-release-sync-actions/commit/831230f3059901e3e8d8cc59be2c6739f6aaba9f))
+
 ## [1.0.1](https://github.com/jobara/test-release-sync-actions/compare/v1.0.0...v1.0.1) (2023-12-12)
 
 
