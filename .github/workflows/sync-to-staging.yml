@@ -24,7 +24,7 @@ jobs:
         run: echo "COMMIT_SHA=$(git show-ref ${{ inputs.version || github.event.release.tag_name }} --hash)" >> $GITHUB_ENV
       - name: Create release branch
         run: |
-          git checkout -b sync-${{ inputs.version || github.event.release.tag_name }} ${{ env.COMMIT_SHA || github.event.release.target_commitish }}
+          git branch sync-${{ inputs.version || github.event.release.tag_name }} ${{ env.COMMIT_SHA || github.event.release.target_commitish }}
       - name: create pull request to ${{ env.branch }}
         run: gh pr create -B $TO_BRANCH -H $FROM_BRANCH --title "$PULL_REQUEST_TITLE" --body "$PULL_REQUEST_BODY"
         env:
